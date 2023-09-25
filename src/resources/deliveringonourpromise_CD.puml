@@ -1,0 +1,80 @@
+@startuml
+
+class App {
+    -App()
+    +getPromiseHistoryClient(): PromiseHistoryClient
+    +getPromiseHistoryByOrderIdActivity(): GetPromiseHistoryByOrderIdActivity
+    +getOrderDao(): OrderDao
+    +getPromiseDao(): PromiseDao
+    +getOrderManipulationAuthorityClient(): OrderManipulationAuthorityClient
+    +getDeliveryPromiseServiceClient(): DeliveryPromiseServiceClient
+    +getOrderManipulationAuthority(): OrderManipulationAuthority
+    +getDeliveryPromiseService(): DeliveryPromiseService
+    +getOrderDatastore(): OrderDatastore
+}
+
+class PromiseHistoryClient {
+    -activity: GetPromiseHistoryByOrderIdActivity
+}
+
+class GetPromiseHistoryByOrderIdActivity {
+    -orderDao: OrderDao
+    -promiseDao: PromiseDao
+}
+
+class OrderDao {
+    -authorityClient: OrderManipulationAuthorityClient
+}
+
+class PromiseDao {
+    -deliveryPromiseServiceClient: DeliveryPromiseServiceClient
+    -authorityClient: OrderManipulationAuthorityClient
+}
+
+class OrderManipulationAuthorityClient {
+    -omaService: OrderManipulationAuthority
+    +getCustomerOrderByOrderId(orderId: String): OrderResult
+    +getCustomerOrderItemByOrderItemId(orderItemId: String): OrderResultItem
+}
+
+class DeliveryPromiseServiceClient {
+    -dpService: DeliveryPromiseService
+    +getDeliveryPromiseByOrderItemId(customerOrderItemId: String): Promise
+}
+
+class OrderManipulationAuthority {
+    -orderDatastore: OrderDatastore
+    +getCustomerOrderByOrderId(orderId: String): OrderResult
+    +getCustomerOrderItemByOrderItemId(orderItemId: String): OrderResultItem
+}
+
+class DeliveryPromiseService {
+    -orderDatastore: OrderDatastore
+    +getDeliveryPromise(customerOrderItemId: String): DeliveryPromise
+}
+
+class OrderDatastore {
+    +getOrderData(orderId: String): OrderData
+    +getOrderItemData(orderItemId: String): OrderItemData
+}
+
+class OrderData {}
+class OrderItemData {}
+class Promise {}
+class DeliveryPromise {}
+
+App --> PromiseHistoryClient: provides >
+App --> GetPromiseHistoryByOrderIdActivity: provides >
+App --> OrderDao: provides >
+App --> PromiseDao: provides >
+App --> OrderManipulationAuthorityClient: provides >
+App --> DeliveryPromiseServiceClient: provides >
+App --> OrderManipulationAuthority: provides >
+App --> DeliveryPromiseService: provides >
+
+OrderManipulationAuthorityClient --> OrderManipulationAuthority: uses >
+DeliveryPromiseServiceClient --> DeliveryPromiseService: uses >
+OrderManipulationAuthority --> OrderDatastore: uses >
+DeliveryPromiseService --> OrderDatastore: uses >
+
+@enduml
