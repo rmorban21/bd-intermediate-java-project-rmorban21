@@ -100,6 +100,20 @@ public class ShellTest {
         // THEN
         assertOrderMatch(order, result);
     }
+    @Test
+
+    void handleUserRequest_nonExistingOrderFromPromiseHistoryClient_returnsErrorMessage() {
+        String orderId = "111-7497023-2960775";
+        when(mockUserHandler.getString(anyString(), anyString())).thenReturn(orderId);
+        when(mockPromiseHistoryClient.getPromiseHistoryByOrderId(anyString())).thenReturn(new PromiseHistory(null));
+
+        // WHEN
+        String result = shell.handleUserRequest();
+
+        // THEN
+        assertEquals(String.format("Unable to find any order data for orderId: %s. Please check your " +
+                "order id and try again.", orderId), result);
+    }
 
     @Test
     void handleUserRequest_withPromiseWithNullFields_RendersPromiseRow() {
