@@ -68,6 +68,7 @@ public class Shell {
                 System.out.println(shell.handleUserRequest());
             } while (shell.userHasAnotherRequest());
         } catch (Exception e)
+                // FIX ME: Implement error handling here
         {
             System.out.println("Error encountered. Exiting.");
         }
@@ -90,7 +91,9 @@ public class Shell {
         } while ("".equals(response));
 
         PromiseHistory promiseHistory = promiseHistoryClient.getPromiseHistoryByOrderId(response);
+
         if (promiseHistory.getOrder() == null) {
+            //FIX ME - improve this error message
             return String.format(UNKNOWN_ORDER_MESSAGE, response);
         }
         return renderOrderTable(promiseHistory.getOrder()) + renderPromiseHistoryTable(promiseHistory);
