@@ -93,7 +93,6 @@ public class Shell {
         PromiseHistory promiseHistory = promiseHistoryClient.getPromiseHistoryByOrderId(response);
 
         if (promiseHistory.getOrder() == null) {
-            //FIX ME - improve this error message
             return String.format(UNKNOWN_ORDER_MESSAGE, response);
         }
         return renderOrderTable(promiseHistory.getOrder()) + renderPromiseHistoryTable(promiseHistory);

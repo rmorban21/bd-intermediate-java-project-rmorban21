@@ -1,0 +1,75 @@
+OrderDaoTest Plan
+
+=========================================================================================
+
+get_forKnownOrderId_returnsOrder
+
+Happy case, verifying that the OrderDao can return an order.
+
+GIVEN
+
+An order ID that we know exists
+
+WHEN
+
+We call get() with that order ID
+
+THEN
+
+The result is not null
+
+=========================================================================================
+
+get_forKnownOrderId_returnsNullWhenOmaClientReturnsNull
+
+Test case, verifying that the OrderDao returns null when omaClient returns null
+
+GIVEN
+
+An order ID that we know exists
+
+WHEN
+
+Simulate OMAClient returning null for the known orderID
+
+THEN
+
+OrderDao returns null
+
+=========================================================================================
+
+get_forInvalidOrderIdFormat_returnsErrorMessage
+
+Test case, verifying that the OrderDao returns null for an invalid order ID format.
+
+GIVEN
+
+An order ID with an invalid format
+
+WHEN
+
+We call get() with that order ID
+
+THEN
+
+The result is an error message
+
+=========================================================================================
+
+get_forValidButNonExistentOrderId_returnsErrorMessage
+
+Test case, verifying that the OrderDao returns Error Message given validID but no OrderData
+
+GIVEN
+
+A valid order ID format
+
+WHEN
+
+We call get() with that order ID
+
+THEN
+
+OrderDao returns null and the error message is displayed to the user.
+
+
