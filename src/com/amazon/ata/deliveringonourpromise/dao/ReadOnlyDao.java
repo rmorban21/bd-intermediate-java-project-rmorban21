@@ -2,6 +2,9 @@ package com.amazon.ata.deliveringonourpromise.dao;
 
 /**
  * DAO interface to abstract calls.
+ * @param <I> orderId.
+ * @param <O> Object to be returned
+ *
  */
 public interface ReadOnlyDao<I, O> {
 

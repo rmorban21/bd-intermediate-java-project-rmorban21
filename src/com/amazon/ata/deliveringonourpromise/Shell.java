@@ -36,8 +36,6 @@ public class Shell {
     private PromiseHistoryClient promiseHistoryClient;
     private ATAUserHandler inputHandler;
 
-    // FIXME: Added to cause a problem with Spotbug
-    private String unusedPrivateString;
 
     /**
      * Constructs a Shell instance that will use the given service client.
@@ -61,18 +59,14 @@ public class Shell {
         Shell shell = new Shell(App.getPromiseHistoryClient(), new ATAUserHandler());
         shell.processCommandLineArgs(args);
 
-        try
-        {
-            do
-            {
+        try {
+            do {
                 System.out.println(shell.handleUserRequest());
             } while (shell.userHasAnotherRequest());
-        } catch (Exception e)
-                // FIX ME: Implement error handling here
-        {
+        }
+        catch (Exception e) {
             System.out.println("Error encountered. Exiting.");
         }
-
         System.out.println("Thank you for using the Promise History CLI. Have a great day!\n\n");
     }
 
