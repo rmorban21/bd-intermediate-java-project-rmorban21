@@ -10,11 +10,11 @@ What's the problem with the way the PromiseDao currently works?
 
 What ways will the CS representatives use the new multiple-client PromiseDao?
 
-- 
+- Retrieving promises, validating promises or order Ids or updating promises with new information.
 
 In a few sentences, how does the PromiseDao work right now?
 
-- 
+- The PromiseDao retrieves a list of promises by accessing the OMA service for the delivery date and the DPS client to validate the customerOrderItemId.
 
 Consider a developer unfamiliar with the Missed Promise CLI. Can you add diagrams here that will help them understand how the PromiseDao works right now?
 
@@ -24,13 +24,13 @@ Consider a developer unfamiliar with the Missed Promise CLI. Can you add diagram
 
 Describe in a few sentences how your changes will satisfy the use cases you listed above. How will you enable getting promises from OFS? How will you allow new promise sources to be added easily in the future?
 
-- 
+- An implementation of an interface that defines the contract for promise sources then implement DPS and OFS. This way PromiseDawo can interact with these implementations through the interface and allow for new promise sources in the future. 
 
 ## Out of Scope
 
 Consider a reviewer who misunderstands this design and believes you're going to make the PromiseDao perfect. What are you not going to do? 
 
-- 
+- There will be limitations as not every possible source of promises may be supported. 
 
 ## Details
 
