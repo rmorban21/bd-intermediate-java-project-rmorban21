@@ -5,10 +5,15 @@ import com.amazon.ata.deliveringonourpromise.dao.OrderDao;
 import com.amazon.ata.deliveringonourpromise.dao.PromiseDao;
 import com.amazon.ata.deliveringonourpromise.data.OrderDatastore;
 import com.amazon.ata.deliveringonourpromise.deliverypromiseservice.DeliveryPromiseServiceClient;
+import com.amazon.ata.deliveringonourpromise.orderfulfillmentservice.OrderFulfillmentServiceClient;
 import com.amazon.ata.deliveringonourpromise.ordermanipulationauthority.OrderManipulationAuthorityClient;
 import com.amazon.ata.deliveringonourpromise.promisehistoryservice.PromiseHistoryClient;
 import com.amazon.ata.deliverypromiseservice.service.DeliveryPromiseService;
+import com.amazon.ata.orderfulfillmentservice.OrderFulfillmentService;
 import com.amazon.ata.ordermanipulationauthority.OrderManipulationAuthority;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Provides inversion of control for the DeliveringOnOurPromise project by instantiating all of the
@@ -32,14 +37,18 @@ public class App {
         return new GetPromiseHistoryByOrderIdActivity(getOrderDao(), getPromiseDao());
     }
 
+
+
+
     // DAOs
     public static OrderDao getOrderDao() {
         return new OrderDao(getOrderManipulationAuthorityClient());
     }
     public static PromiseDao getPromiseDao() {
-        return new PromiseDao(getDeliveryPromiseServiceClient(),
-                              getOrderManipulationAuthorityClient()
-        );
+        List<PromiseServiceClient> promiseServiceClients = new ArrayList<>();
+        promiseServiceClients.add(getDeliveryPromiseServiceClient());
+        promiseServiceClients.add(getOrderFulfillmentServiceClient());
+        return new PromiseDao(getOrderManipulationAuthorityClient(), promiseServiceClients);
     }
 
     // service clients
@@ -49,6 +58,9 @@ public class App {
     public static DeliveryPromiseServiceClient getDeliveryPromiseServiceClient() {
         return new DeliveryPromiseServiceClient(getDeliveryPromiseService());
     }
+    public static OrderFulfillmentServiceClient getOrderFulfillmentServiceClient() {
+        return new OrderFulfillmentServiceClient(getOrderFulfillmentService());
+    }
 
     // dependency services
     public static OrderManipulationAuthority getOrderManipulationAuthority() {
@@ -56,6 +68,10 @@ public class App {
     }
     public static DeliveryPromiseService getDeliveryPromiseService() {
         return new DeliveryPromiseService(getOrderDatastore());
+    }
+
+    public static OrderFulfillmentService getOrderFulfillmentService() {
+        return new OrderFulfillmentService(getOrderDatastore(), getDeliveryPromiseService());
     }
 
     // sample data

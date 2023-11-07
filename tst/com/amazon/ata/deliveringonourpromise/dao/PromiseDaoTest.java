@@ -1,8 +1,8 @@
 package com.amazon.ata.deliveringonourpromise.dao;
 
 import com.amazon.ata.deliveringonourpromise.App;
+import com.amazon.ata.deliveringonourpromise.PromiseServiceClient;
 import com.amazon.ata.deliveringonourpromise.deliverypromiseservice.DeliveryPromiseServiceClient;
-import com.amazon.ata.deliveringonourpromise.orderfulfillmentservice.OrderFulfillmentServiceClient;
 import com.amazon.ata.deliveringonourpromise.ordermanipulationauthority.OrderManipulationAuthorityClient;
 import com.amazon.ata.deliveringonourpromise.types.Promise;
 
@@ -63,7 +63,7 @@ public class PromiseDaoTest {
                                     .getOrderShipmentList().get(0)
                                     .getDeliveryDate();
 
-        dao = new PromiseDao(dpsClient, omaClient);
+        dao = App.getPromiseDao();
     }
 
     @Test

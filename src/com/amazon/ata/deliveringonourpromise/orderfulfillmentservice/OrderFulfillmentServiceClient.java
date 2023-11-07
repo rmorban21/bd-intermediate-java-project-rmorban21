@@ -1,5 +1,6 @@
 package com.amazon.ata.deliveringonourpromise.orderfulfillmentservice;
 
+import com.amazon.ata.deliveringonourpromise.PromiseServiceClient;
 import com.amazon.ata.deliveringonourpromise.types.Promise;
 import com.amazon.ata.orderfulfillmentservice.OrderFulfillmentService;
 import com.amazon.ata.orderfulfillmentservice.OrderPromise;
@@ -9,7 +10,7 @@ import com.amazon.ata.orderfulfillmentservice.OrderPromise;
  * Client for accessing the OrderFulfillmentService to retrieve Promises.
  */
 
-public class OrderFulfillmentServiceClient {
+public class OrderFulfillmentServiceClient implements PromiseServiceClient {
 
     private OrderFulfillmentService ofService;
 
@@ -23,9 +24,10 @@ public class OrderFulfillmentServiceClient {
         this.ofService = ofService;
     }
 
-
-    public Promise getOrderPromiseByOrderItemId(String customerOrderItemId) {
+    @Override
+    public Promise getPromiseByOrderItemId(String customerOrderItemId) {
         OrderPromise orderPromise = ofService.getOrderPromise(customerOrderItemId);
+
         if (null == orderPromise) {
             return null;
         }
@@ -39,6 +41,5 @@ public class OrderFulfillmentServiceClient {
                 .withAsin(orderPromise.getAsin())
                 .build();
     }
-
 }
 

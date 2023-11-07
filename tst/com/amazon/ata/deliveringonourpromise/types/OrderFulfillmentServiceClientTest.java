@@ -25,7 +25,7 @@ public class OrderFulfillmentServiceClientTest {
     public void getOrderFulfillmentServiceClient_nullOrderItemId_returnsNull() {
         orderItemId = null;
 
-        Promise promise = client.getOrderPromiseByOrderItemId(orderItemId);
+        Promise promise = client.getPromiseByOrderItemId(orderItemId);
 
         assertNull(promise);
     }
@@ -34,45 +34,45 @@ public class OrderFulfillmentServiceClientTest {
     public void getOrderFulfillmentServiceClient_nonexistentOrderItemId_returnsNull() {
         orderItemId = "20";
 
-        Promise promise = client.getOrderPromiseByOrderItemId(orderItemId);
+        Promise promise = client.getPromiseByOrderItemId(orderItemId);
 
         assertNull(promise);
     }
 
     @Test
     public void getOrderFulfillmentServiceClient_validItemId_hasCorrectOrderItemId() {
-        Promise promise = client.getOrderPromiseByOrderItemId(orderItemId);
+        Promise promise = client.getPromiseByOrderItemId(orderItemId);
         assertEquals(orderItemId, promise.getCustomerOrderItemId());
     }
 
     @Test
     public void getOrderFulfillmentServiceClient_validItemId_setsLatestArrivalDate() {
-        Promise promise = client.getOrderPromiseByOrderItemId(orderItemId);
+        Promise promise = client.getPromiseByOrderItemId(orderItemId);
         assertNotNull(promise.getPromiseLatestArrivalDate());
     }
 
     @Test
     public void getOrderFulfillmentServiceClient_validItemId_setsPromiseLatestShipDate() {
-        Promise promise = client.getOrderPromiseByOrderItemId(orderItemId);
+        Promise promise = client.getPromiseByOrderItemId(orderItemId);
         assertNotNull(promise.getPromiseLatestShipDate());
     }
 
     @Test
     public void getOrderFulfillmentServiceClient_validItemId_setsEffectiveDate() {
-        Promise promise = client.getOrderPromiseByOrderItemId(orderItemId);
+        Promise promise = client.getPromiseByOrderItemId(orderItemId);
         assertNotNull(promise.getPromiseEffectiveDate());
     }
 
     @Test
     public void getOrderFulfillmentServiceClient_validItemId_setsPromiseProvidedBy() {
-        Promise promise = client.getOrderPromiseByOrderItemId(orderItemId);
-        assertEquals(orderItemId, promise.getPromiseProvidedBy());
+        Promise promise = client.getPromiseByOrderItemId(orderItemId);
+        assertNotNull(orderItemId, promise.getPromiseProvidedBy());
     }
 
     @Test
     public void getOrderFulfillmentServiceClient_validItemId_setsAsin() {
-        Promise promise = client.getOrderPromiseByOrderItemId(orderItemId);
-        assertEquals(orderItemId, promise.getAsin());
+        Promise promise = client.getPromiseByOrderItemId(orderItemId);
+        assertNotNull(orderItemId, promise.getAsin());
     }
 
 

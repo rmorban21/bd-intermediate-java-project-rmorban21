@@ -14,23 +14,29 @@ What ways will the CS representatives use the new multiple-client PromiseDao?
 
 In a few sentences, how does the PromiseDao work right now?
 
-- The PromiseDao retrieves a list of promises by accessing the OMA service for the delivery date and the DPS client to validate the customerOrderItemId.
+- The PromiseDao currently retrieves a list of promises by accessing the Order Manipulation Authority (OMA) service for the delivery date and the DPS client for validating the customerOrderItemId.
 
 Consider a developer unfamiliar with the Missed Promise CLI. Can you add diagrams here that will help them understand how the PromiseDao works right now?
 
-- 
+- Retrieving promises from different sources. 
+- Validating promises or order IDs. 
+- Updating promises with new information from various clients.
 
 ## Proposed Solution
 
 Describe in a few sentences how your changes will satisfy the use cases you listed above. How will you enable getting promises from OFS? How will you allow new promise sources to be added easily in the future?
 
-- An implementation of an interface that defines the contract for promise sources then implement DPS and OFS. This way PromiseDawo can interact with these implementations through the interface and allow for new promise sources in the future. 
+- Introduce a list of promise service client objects in the PromiseDao class. These client objects should represent various promise sources, such as DeliveryPromiseServiceClient and OrderFulfillmentServiceClient (OFS). This list will allow you to interact with different clients in a flexible manner.
+
+In this approach, each client-specific logic can be contained within their respective client classes. The PromiseDao will maintain a list of client objects, and when CS representatives need to retrieve, validate, or update promises, the PromiseDao will iterate through the list and perform the corresponding actions on each client.
+
+This approach keeps the code modular and allows for adding new promise sources in the future without modifying the PromiseDao class directly.
 
 ## Out of Scope
 
 Consider a reviewer who misunderstands this design and believes you're going to make the PromiseDao perfect. What are you not going to do? 
 
-- There will be limitations as not every possible source of promises may be supported. 
+- As previously mentioned, it's essential to understand that while this approach makes the design more flexible, there will still be limitations. Not every possible source of promises may be supported, but the focus is on code extensibility.
 
 ## Details
 
