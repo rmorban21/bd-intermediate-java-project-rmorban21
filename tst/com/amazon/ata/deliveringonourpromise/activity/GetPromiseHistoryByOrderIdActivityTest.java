@@ -10,9 +10,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
@@ -42,6 +42,42 @@ public class GetPromiseHistoryByOrderIdActivityTest {
         assertThrows(IllegalArgumentException.class, () -> activity.getPromiseHistoryByOrderId(orderId));
     }
 
+
+    @Test
+    public void getPromiseHistoryByOrderId_orderWithKnownAsin_returnsPromisesSortedByASIN() {
+        // GIVEN
+        String orderId = "900-3746403-0000002";
+
+        // WHEN
+        PromiseHistory promiseHistory = activity.getPromiseHistoryByOrderId(orderId);
+
+        // THEN
+        assertNotNull(promiseHistory);
+        Order order = promiseHistory.getOrder();
+        assertNotNull(order);
+        List<Promise> promises = promiseHistory.getPromises();
+        assertNotNull(promises);
+
+        // Print promises before sorting
+        System.out.println("Before sorting: " + promises);
+
+        // Check if promises are sorted by ASIN in ascending order
+        for (int i = 0; i < promises.size() - 1; i++) {
+            String currentAsin = promises.get(i).getAsin();
+            String nextAsin = promises.get(i + 1).getAsin();
+
+            // Print for debugging purposes
+            System.out.println("Current ASIN: " + currentAsin);
+            System.out.println("Next ASIN: " + nextAsin);
+
+            assertTrue(currentAsin.compareTo(nextAsin) <= 0, "Promises are not sorted by ASIN");
+        }
+
+        // Print promises after sorting
+        System.out.println("After sorting: " + promises);
+    }
+
+
     @Test
     public void getPromiseHistoryByOrderId_orderWithDpsPromise_returnsDpsPromise() {
         // GIVEN - an order that hasn't shipped yet but should return a DPS promise
@@ -58,10 +94,38 @@ public class GetPromiseHistoryByOrderIdActivityTest {
             }
         }
         assertTrue(foundDpsPromise,
-                   String.format("Expected to find a DPS promise for order ID '%s', but promises were: %s",
-                                 orderId,
-                                 history.getPromises().toString()
-                   )
+                String.format("Expected to find a DPS promise for order ID '%s', but promises were: %s",
+                        orderId,
+                        history.getPromises().toString()
+                )
         );
     }
+
+    @Test
+    public void promisesSortedByAsin() {
+        // GIVEN
+        String orderId = "900-3746403-0000002";
+
+        // WHEN
+        PromiseHistory promiseHistory = activity.getPromiseHistoryByOrderId(orderId);
+
+        // THEN
+        assertNotNull(promiseHistory);
+
+        List<Promise> promises = promiseHistory.getPromises();
+        assertNotNull(promises);
+
+        System.out.println("Before sorting: " + promises);
+
+        // Check if promises are sorted by ASIN in ascending order
+        for (int i = 0; i < promises.size() - 1; i++) {
+            String currentAsin = promises.get(i).getAsin();
+            String nextAsin = promises.get(i + 1).getAsin();
+            assertTrue(currentAsin.compareTo(nextAsin) <= 0, "Promises are not sorted by ASIN");
+        }
+
+        // Print promises after sorting
+        System.out.println("After sorting: " + promises);
+    }
 }
+

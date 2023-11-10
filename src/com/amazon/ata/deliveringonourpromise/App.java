@@ -38,8 +38,6 @@ public class App {
     }
 
 
-
-
     // DAOs
     public static OrderDao getOrderDao() {
         return new OrderDao(getOrderManipulationAuthorityClient());
