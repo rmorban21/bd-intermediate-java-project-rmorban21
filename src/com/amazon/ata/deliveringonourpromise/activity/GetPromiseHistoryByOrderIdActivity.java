@@ -30,6 +30,7 @@ public class GetPromiseHistoryByOrderIdActivity {
         this.orderDao = orderDao;
         this.promiseDao = promiseDao;
     }
+
     /**
      * Returns the PromiseHistory for the given order ID, if the order exists. If the order does
      * not exist a PromiseHistory with a null order and no promises will be returned.
@@ -67,15 +68,5 @@ public class GetPromiseHistoryByOrderIdActivity {
             history.addPromise(promise);
         }
         return history;
-    }
-    /**
-     * Prints promises for each item.
-     *
-     * @param promises List of promises for an item
-     */
-    private static void printPromisesForItem(List<Promise> promises) {
-        for (Promise promise : promises) {
-            System.out.println("ASIN: " + promise.getAsin() + ", Provider: " + promise.getPromiseProvidedBy());
-        }
     }
 }
