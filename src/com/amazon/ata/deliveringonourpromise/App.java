@@ -42,6 +42,11 @@ public class App {
     public static OrderDao getOrderDao() {
         return new OrderDao(getOrderManipulationAuthorityClient());
     }
+
+    /**
+     * Creates a new ArrayList for service clients.
+     * @return - omaClient to return Date and client that returns Promise.
+     */
     public static PromiseDao getPromiseDao() {
         List<PromiseServiceClient> promiseServiceClients = new ArrayList<>();
         promiseServiceClients.add(getDeliveryPromiseServiceClient());

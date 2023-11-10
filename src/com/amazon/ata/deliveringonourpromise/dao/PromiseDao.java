@@ -1,7 +1,6 @@
 package com.amazon.ata.deliveringonourpromise.dao;
 
 import com.amazon.ata.deliveringonourpromise.PromiseServiceClient;
-import com.amazon.ata.deliveringonourpromise.deliverypromiseservice.DeliveryPromiseServiceClient;
 import com.amazon.ata.deliveringonourpromise.ordermanipulationauthority.OrderManipulationAuthorityClient;
 import com.amazon.ata.deliveringonourpromise.types.Promise;
 import com.amazon.ata.ordermanipulationauthority.OrderResult;
@@ -23,7 +22,7 @@ public class PromiseDao implements ReadOnlyDao<String, List<Promise>> {
      * PromiseDao constructor, accepting service clients for DPS and OMA.
      *
      * @param omaClient       OrderManipulationAuthorityClient for DAO to access OMA
-     * @param promiseServiceClients
+     * @param promiseServiceClients - interface for service clients.
      */
     public PromiseDao(OrderManipulationAuthorityClient omaClient, List<PromiseServiceClient> promiseServiceClients) {
         this.omaClient = omaClient;

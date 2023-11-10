@@ -58,23 +58,13 @@ public class GetPromiseHistoryByOrderIdActivityTest {
         List<Promise> promises = promiseHistory.getPromises();
         assertNotNull(promises);
 
-        // Print promises before sorting
-        System.out.println("Before sorting: " + promises);
-
         // Check if promises are sorted by ASIN in ascending order
         for (int i = 0; i < promises.size() - 1; i++) {
             String currentAsin = promises.get(i).getAsin();
             String nextAsin = promises.get(i + 1).getAsin();
-
-            // Print for debugging purposes
-            System.out.println("Current ASIN: " + currentAsin);
-            System.out.println("Next ASIN: " + nextAsin);
-
             assertTrue(currentAsin.compareTo(nextAsin) <= 0, "Promises are not sorted by ASIN");
         }
 
-        // Print promises after sorting
-        System.out.println("After sorting: " + promises);
     }
 
 

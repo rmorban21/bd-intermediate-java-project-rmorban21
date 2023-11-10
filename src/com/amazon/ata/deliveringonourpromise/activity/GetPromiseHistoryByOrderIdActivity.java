@@ -11,8 +11,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
 /**
  * Activity class, handling the GetPromiseHistoryByOrderId API.
  */
@@ -32,7 +30,6 @@ public class GetPromiseHistoryByOrderIdActivity {
         this.orderDao = orderDao;
         this.promiseDao = promiseDao;
     }
-
     /**
      * Returns the PromiseHistory for the given order ID, if the order exists. If the order does
      * not exist a PromiseHistory with a null order and no promises will be returned.
@@ -54,24 +51,23 @@ public class GetPromiseHistoryByOrderIdActivity {
         List<OrderItem> customerOrderItems = order.getCustomerOrderItemList();
         PromiseHistory history = new PromiseHistory(order);
 
-        if (customerOrderItems != null && !customerOrderItems.isEmpty()) {
-            for (OrderItem customerOrderItem : customerOrderItems) {
-                List<Promise> promises = promiseDao.get(customerOrderItem.getCustomerOrderItemId());
+        List<Promise> promises = new ArrayList<>();
+        for (OrderItem customerOrderItem : customerOrderItems) {
+            if (customerOrderItem != null) {
+                List<Promise> promisesSubset = promiseDao.get(customerOrderItem.getCustomerOrderItemId());
 
-                // Use the PromiseAsinComparator for sorting
-               promises.sort(new PromiseAsinComparator());
-
-
-                for (Promise promise : promises) {
+                for (Promise promise : promisesSubset) {
                     promise.setConfidence(customerOrderItem.isConfidenceTracked(), customerOrderItem.getConfidence());
-                    history.addPromise(promise);
+                    promises.add(promise);
                 }
             }
         }
-
-            return history;
+        Collections.sort(promises, new PromiseAsinComparator());
+        for (Promise promise : promises) {
+            history.addPromise(promise);
         }
-
+        return history;
+    }
     /**
      * Prints promises for each item.
      *
